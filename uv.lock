@@ -140,7 +140,7 @@ verl-cpu = [
     { name = "tensordict" },
     { name = "torch", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "agentlightning", group = "verl-cpu" } },
     { name = "tqdm" },
-    { name = "verl", specifier = ">=0.7.1,<0.9.0" },
+    { name = "verl", specifier = ">=0.7.1,<1.0.0" },
 ]
 
 [[package]]

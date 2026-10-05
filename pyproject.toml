@@ -113,12 +113,11 @@ dev = [
 # and ~2.3GB of CUDA runtime is skipped. This is not a training environment --
 # install verl against the GPU torch build of your choice for that.
 #
-# Upper bound is deliberate: verl 0.9.0 renamed main_ppo.TaskRunner to
-# TaskRunnerV1 (the old name moved to main_ppo_v0) and dropped
-# create_rl_sampler, both of which entrypoint.py imports. auto_await landed in
-# 0.7.1, so that is the floor.
+# Floor is 0.7.1, where auto_await landed. The 0.9 layout change -- main_ppo's
+# TaskRunner moving to main_ppo_v0 and create_rl_sampler to ppo.utils -- is
+# resolved in agentlightning/verl/verl_compat.py, so both layouts are supported.
 verl-cpu = [
-    "verl>=0.7.1,<0.9.0",
+    "verl>=0.7.1,<1.0.0",
     "torch",
     "ray",
     "tensordict",

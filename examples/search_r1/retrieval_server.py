@@ -41,9 +41,15 @@ class RetrievalConfig:
 
 
 def _resolve_device(device: str) -> torch.device:
-    if device == "auto":
-        return torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    return torch.device(device)
+    if device != "auto":
+        return torch.device(device)
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    # The encoder is plain transformers, so it runs on an Intel GPU unchanged;
+    # without this the retrieval server silently falls back to CPU there.
+    if hasattr(torch, "xpu") and torch.xpu.is_available():
+        return torch.device("xpu")
+    return torch.device("cpu")
 
 
 def _pool(last_hidden_state: torch.Tensor, attention_mask: torch.Tensor) -> torch.Tensor:

@@ -77,16 +77,15 @@ class _AglTaskRunner:
     """TaskRunner that extends verl's TaskRunner with pre-loaded dataset support."""
 
     def __init__(self):
-        from verl.trainer.main_ppo import TaskRunner
+        from agentlightning.verl.verl_compat import task_runner_class
 
-        self._delegate = TaskRunner()
+        self._delegate = task_runner_class()()
 
     def run(self, config, train_dataset, val_dataset):
         from pprint import pprint
 
         from omegaconf import OmegaConf
         from verl.trainer.main_ppo import (
-            create_rl_sampler,
             need_critic,
             need_reference_policy,
             validate_config,
@@ -96,6 +95,7 @@ class _AglTaskRunner:
         from verl.utils.tokenizer import hf_processor, hf_tokenizer
 
         from agentlightning.verl.trainer import AgentLightningRayPPOTrainer
+        from agentlightning.verl.verl_compat import create_rl_sampler
 
         print(f"AglTaskRunner hostname: {socket.gethostname()}, PID: {os.getpid()}")
         pprint(OmegaConf.to_container(config, resolve=True))
